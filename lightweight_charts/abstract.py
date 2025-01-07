@@ -3,7 +3,7 @@ import json
 import os
 from base64 import b64decode
 from datetime import datetime
-from typing import Callable, Union, Literal, List, Optional
+from typing import Any, Callable, Union, Literal, List, Optional
 import pandas as pd
 
 from .table import Table
@@ -262,19 +262,23 @@ class SeriesCommon(Pane):
         for marker in markers:
             marker_id = self.win._id_gen.generate()
             self.markers[marker_id] = {
+                "id": marker_id,
                 "time": self._single_datetime_format(marker['time']),
                 "position": marker_position(marker['position']),
                 "color": marker['color'],
                 "shape": marker_shape(marker['shape']),
                 "text": marker['text'],
+                "size": marker.get('size'),
+                **{k: v for k, v in marker.items() 
+                   if k not in ['id', 'time', 'position', 'color', 'shape', 'text', 'size']},
             }
             marker_ids.append(marker_id)
         self._update_markers()
         return marker_ids
 
     def marker(self, time: Optional[datetime] = None, position: MARKER_POSITION = 'below',
-               shape: MARKER_SHAPE = 'arrow_up', color: str = '#2196F3', text: str = ''
-               ) -> str:
+               shape: MARKER_SHAPE = 'arrow_up', color: str = '#2196F3', text: str = '',
+               size: Optional[float] = None, **kwargs: Any) -> str:
         """
         Creates a new marker.\n
         :param time: Time location of the marker. If no time is given, it will be placed at the last bar.
@@ -282,6 +286,7 @@ class SeriesCommon(Pane):
         :param color: The color of the marker (rgb, rgba or hex).
         :param shape: The shape of the marker.
         :param text: The text to be placed with the marker.
+        :param size: The size of the marker.
         :return: The id of the marker placed.
         """
         try:
@@ -291,11 +296,14 @@ class SeriesCommon(Pane):
         marker_id = self.win._id_gen.generate()
 
         self.markers[marker_id] = {
+            "id": marker_id,
             "time": formatted_time,
             "position": marker_position(position),
             "color": color,
             "shape": marker_shape(shape),
             "text": text,
+            "size": size,
+            **kwargs,
         }
         self._update_markers()
         return marker_id

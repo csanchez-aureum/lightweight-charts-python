@@ -1,9 +1,3 @@
-Fork of the original [lightweight-charts](louisnw01/lightweight-charts-python) with enhancements
-* Dynamic switchers
-* Disable legend per line
-
----------
-
 <div align="center">
 
 # lightweight-charts-python
