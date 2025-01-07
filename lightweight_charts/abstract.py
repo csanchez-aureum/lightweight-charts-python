@@ -396,6 +396,7 @@ class SeriesCommon(Pane):
         """
         min_move = 1 / (10**precision)
         self.run_script(f'''
+        {self.id}.precision = {precision}
         {self.id}.series.applyOptions({{
             priceFormat: {{precision: {precision}, minMove: {min_move}}}
         }})''')
@@ -459,6 +460,7 @@ class Line(SeriesCommon):
                 {jbool(legend_visible)}
             )
         null''')
+        self.precision(chart.num_decimals)
 
     # def _set_trend(self, start_time, start_value, end_time, end_value, ray=False, round=False):
     #     if round:
@@ -514,6 +516,7 @@ class Histogram(SeriesCommon):
         {self.id}.series.priceScale().applyOptions({{
             scaleMargins: {{top:{scale_margin_top}, bottom: {scale_margin_bottom}}}
         }})''')
+        self.precision(chart.num_decimals)
 
     def delete(self):
         """
