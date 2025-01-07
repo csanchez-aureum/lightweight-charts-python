@@ -424,7 +424,7 @@ class SeriesCommon(Pane):
 
 
 class Line(SeriesCommon):
-    def __init__(self, chart, name, color, style, width, price_line, price_label, price_scale_id=None, crosshair_marker=True):
+    def __init__(self, chart, name, color, style, width, price_line, price_label, price_scale_id=None, crosshair_marker=True, legend_visible=True):
 
         super().__init__(chart, name)
         self.color = color
@@ -447,7 +447,8 @@ class Line(SeriesCommon):
                             },
                         }),
                     """ if chart._scale_candles_only else ''}
-                }}
+                }},
+                {jbool(legend_visible)}
             )
         null''')
 
@@ -486,7 +487,7 @@ class Line(SeriesCommon):
 
 
 class Histogram(SeriesCommon):
-    def __init__(self, chart, name, color, price_line, price_label, scale_margin_top, scale_margin_bottom):
+    def __init__(self, chart, name, color, price_line, price_label, scale_margin_top, scale_margin_bottom, legend_visible=True):
         super().__init__(chart, name)
         self.color = color
         self.run_script(f'''
@@ -499,6 +500,7 @@ class Histogram(SeriesCommon):
                 priceScaleId: '{self.id}',
                 priceFormat: {{type: "volume"}},
             }},
+            {jbool(legend_visible)}
             // precision: 2,
         )
         {self.id}.series.priceScale().applyOptions({{
