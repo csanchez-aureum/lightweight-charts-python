@@ -177,20 +177,24 @@ export class Handler {
         return volumeSeries;
     }
 
-    createLineSeries(name: string, options: DeepPartial<LineStyleOptions & SeriesOptionsCommon>) {
+    createLineSeries(name: string, options: DeepPartial<LineStyleOptions & SeriesOptionsCommon>, legendVisible = true) {
         const line = this.chart.addLineSeries({...options});
         this._seriesList.push(line);
-        this.legend.makeSeriesRow(name, line)
+        if (legendVisible) {
+            this.legend.makeSeriesRow(name, line)
+        }
         return {
             name: name,
             series: line,
         }
     }
 
-    createHistogramSeries(name: string, options: DeepPartial<HistogramStyleOptions & SeriesOptionsCommon>) {
+    createHistogramSeries(name: string, options: DeepPartial<HistogramStyleOptions & SeriesOptionsCommon>, legendVisible = true) {
         const line = this.chart.addHistogramSeries({...options});
         this._seriesList.push(line);
-        this.legend.makeSeriesRow(name, line)
+        if (legendVisible) {
+            this.legend.makeSeriesRow(name, line)
+        }
         return {
             name: name,
             series: line,
