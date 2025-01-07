@@ -35,8 +35,16 @@ export class TopBar {
         this.right = createTopBarContainer('flex-end')
     }
     
-    makeSwitcher(items: string[], defaultItem: string, callbackName: string, align='left') {
-        const switcherElement = document.createElement('div');
+    makeSwitcher(id: string, items: string[], defaultItem: string, callbackName: string, align='left') {
+        let switcherElement = document.getElementById(id) as HTMLDivElement | null;
+
+        if (switcherElement) {
+            switcherElement.innerHTML = '';
+        } else {
+            switcherElement = document.createElement('div');
+            switcherElement.id = id;
+        }
+
         switcherElement.style.margin = '4px 12px'
 
         let activeItemEl: HTMLButtonElement;
@@ -74,7 +82,11 @@ export class TopBar {
             }
         }
 
-        this.appendWidget(switcherElement, align, true)
+        if (document.getElementById(id)) {
+            this._handler.reSize();
+        } else {
+            this.appendWidget(switcherElement, align, true);
+        }
         return widget
     }
 

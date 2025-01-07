@@ -40,10 +40,10 @@ class TextWidget(Widget):
 
 
 class SwitcherWidget(Widget):
-    def __init__(self, topbar, options, default, align, func):
+    def __init__(self, topbar, name, options, default, align, func):
         super().__init__(topbar, value=default, func=func)
         self.options = list(options)
-        self.run_script(f'{self.id} = {topbar.id}.makeSwitcher({self.options}, "{default}", "{self.id}", "{align}")')
+        self.run_script(f'{self.id} = {topbar.id}.makeSwitcher("{name}", {self.options}, "{default}", "{self.id}", "{align}")')
 
     def set(self, option):
         if option not in self.options:
@@ -110,7 +110,7 @@ class TopBar(Pane):
     def switcher(self, name, options: tuple, default: str = None,
                  align: ALIGN = 'left', func: callable = None):
         self._create()
-        self._widgets[name] = SwitcherWidget(self, options, default if default else options[0], align, func)
+        self._widgets[name] = SwitcherWidget(self, name, options, default if default else options[0], align, func)
 
     def menu(self, name, options: tuple, default: str = None, separator: bool = True,
              align: ALIGN = 'left', func: callable = None):
