@@ -487,7 +487,7 @@ class Line(SeriesCommon):
             {self._chart.id}.legend._lines = {self._chart.id}.legend._lines.filter((item) => item != {self.id}legendItem)
 
             if ({self.id}legendItem) {{
-                {self._chart.id}.legend.div.removeChild({self.id}legendItem.row)
+                {self._chart.id}.legend.seriesContainer.removeChild({self.id}legendItem.row)
             }}
 
             {self._chart.id}.chart.removeSeries({self.id}.series)
@@ -735,25 +735,28 @@ class AbstractChart(Candlestick, Pane):
     def create_line(
             self, name: str = '', color: str = 'rgba(214, 237, 255, 0.6)',
             style: LINE_STYLE = 'solid', width: int = 2,
-            price_line: bool = True, price_label: bool = True, price_scale_id: Optional[str] = None
+            price_line: bool = True, price_label: bool = True, price_scale_id: Optional[str] = None,
+            legend_visible = True
     ) -> Line:
         """
         Creates and returns a Line object.
         """
-        self._lines.append(Line(self, name, color, style, width, price_line, price_label, price_scale_id))
+        self._lines.append(Line(self, name, color, style, width, price_line, 
+                                price_label, price_scale_id, legend_visible))
         return self._lines[-1]
 
     def create_histogram(
             self, name: str = '', color: str = 'rgba(214, 237, 255, 0.6)',
             price_line: bool = True, price_label: bool = True,
-            scale_margin_top: float = 0.0, scale_margin_bottom: float = 0.0
+            scale_margin_top: float = 0.0, scale_margin_bottom: float = 0.0, 
+            legend_visible = True
     ) -> Histogram:
         """
         Creates and returns a Histogram object.
         """
         return Histogram(
             self, name, color, price_line, price_label,
-            scale_margin_top, scale_margin_bottom)
+            scale_margin_top, scale_margin_bottom, legend_visible)
 
     def lines(self) -> List[Line]:
         """
